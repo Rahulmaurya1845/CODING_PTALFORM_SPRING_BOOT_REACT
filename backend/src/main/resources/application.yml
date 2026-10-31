@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: codejudge-api
+  config:
+    # Secrets are read from the .env file in the project root (never committed to GitHub)
+    import: "optional:file:./.env[.properties],optional:file:../.env[.properties]"
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:codejudge}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  jackson:
+    default-property-inclusion: always
+
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  admin:
+    username: ${ADMIN_USERNAME:admin}
+    email: ${ADMIN_EMAIL:admin@codejudge.local}
+    password: ${ADMIN_PASSWORD:}
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+  judge:
+    workers: ${JUDGE_WORKERS:2}
+    startup-allowance-ms: ${JUDGE_STARTUP_ALLOWANCE_MS:1500}
+    prepull: ${JUDGE_PREPULL:true}
+    languages: ${JUDGE_LANGUAGES:PYTHON,JAVA,CPP,JAVASCRIPT}
+
+logging:
+  level:
+    root: INFO
+    com.codejudge: DEBUG
